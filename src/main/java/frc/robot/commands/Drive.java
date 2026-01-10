@@ -20,4 +20,12 @@ public class Drive extends Command {
     public void execute() {
         drive.arcadeDrive(x.getAsDouble(), z.getAsDouble());
     }
+
+    public void end(boolean interrupted) {
+        drive.arcadeDrive(0.0, 0.0); //Stop
+    }
+
+    public boolean isFinished(boolean interrupted) {
+        return false;
+    }
 }
