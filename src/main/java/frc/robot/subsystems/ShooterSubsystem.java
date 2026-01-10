@@ -4,17 +4,41 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.units.VelocityUnit;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.MutAngle;
+import edu.wpi.first.units.measure.MutAngularVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  public static final MutVoltage appliedVoltage = Volts.mutable(0);
+  public static final MutAngle currentRotations = Rotations.mutable(0);
+  public static final MutAngularVelocity currentVelocity = RPM.mutable(0);
   private final SparkMax flywheel;
+  private final RelativeEncoder enc;
+  private final SysIdRoutine routine;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -26,6 +50,13 @@ public class ShooterSubsystem extends SubsystemBase {
     conf.inverted(Constants.DrivetrainConstants.kInvertLeft);
     conf.disableFollowerMode();
     flywheel.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+
+    routine = new SysIdRoutine(
+      new SysIdRoutine.Config(Volts.per(Second).of(0.2), Volts.of(7), Seconds.of(60)),
+      new SysIdRoutine.Mechanism(this::setMotorVoltage, this::logSysID, this)
+    );
+
+    enc = flywheel.getEncoder();
   }
 
   public void setMotorSpeed(double speed) {
@@ -36,5 +67,24 @@ public class ShooterSubsystem extends SubsystemBase {
       speed = -1.0;
     }
     flywheel.set(speed);
+  }
+
+  public void setMotorVoltage(Voltage voltage) {
+    flywheel.setVoltage(voltage.magnitude());
+  }
+
+  public void logSysID(SysIdRoutineLog log) {
+    log.motor("shooter")
+      .voltage(appliedVoltage.mut_replace(flywheel.getAppliedOutput() * RobotController.getBatteryVoltage(), Volts))
+      .angularPosition(currentRotations.mut_replace(enc.getPosition(), Rotations))
+      .angularVelocity(currentVelocity.mut_replace(enc.getVelocity(), RPM));
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return routine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return routine.dynamic(direction);
   }
 }
