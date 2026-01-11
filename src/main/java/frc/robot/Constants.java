@@ -31,4 +31,24 @@ public final class Constants {
     public static final int kIntakeId = 5;
     public static final boolean kInvertIntake = false;
   }
+
+  public static class IntakeArmConstants {
+    public static final int kIntakeArmId = 11;
+
+    public static final boolean kInvert = false;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double kS = 0;
+    public static final double kV = 0;
+    public static final double kA = 0;
+    public static final double kG = 0;
+
+    /**
+     * Conversion factor from motor encoder to angle of arm, with straight toward front of robot being 0 degrees
+     */
+    public static final double encoderToPositionRatio = 1.0;
+  }
 }
