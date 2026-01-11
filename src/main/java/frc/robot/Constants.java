@@ -47,5 +47,9 @@ public final class Constants {
      * Conversion factor from motor encoder to angle of arm, with straight toward front of robot being 0 degrees
      */
     public static final double encoderToPositionRatio = 1.0;
+
+    public static final double climberStartPosition = 0;
+    public static final double climberOutPosition = 180;
+    public static final double climberClimbPosition = 90;
   }
 }

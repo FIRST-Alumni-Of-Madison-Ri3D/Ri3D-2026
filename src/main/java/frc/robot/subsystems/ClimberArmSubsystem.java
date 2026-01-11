@@ -9,22 +9,26 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimberConstants;
 
 public class ClimberArmSubsystem extends SubsystemBase {
   private final SparkMax climberArmMotor;
   private final SparkClosedLoopController controller;
-  
+  private final RelativeEncoder encoder;
 
   /** Creates a new ClimberArmSubsystem. */
   public ClimberArmSubsystem() {
     climberArmMotor = new SparkMax(Constants.ClimberConstants.kClimberArmId, MotorType.kBrushless);
     controller = climberArmMotor.getClosedLoopController();
+    encoder = climberArmMotor.getEncoder();
 
     SparkMaxConfig config = new SparkMaxConfig();
 
@@ -48,6 +52,8 @@ public class ClimberArmSubsystem extends SubsystemBase {
 
     climberArmMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+    setEncoderPosition(ClimberConstants.climberStartPosition);
+
   }
 
   @Override
@@ -55,9 +61,16 @@ public class ClimberArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setPositionSetpoint(double setpoint) {
-    controller.setReference(setpoint, ControlType.kPosition);
+  public Command setPositionCommand(double setpoint) {
+    return runOnce(() -> controller.setSetpoint(setpoint, ControlType.kPosition));
   }
 
-  
+  public double getEncoderPosition() {
+    return encoder.getPosition();
+  }
+
+  public void setEncoderPosition(double position) {
+    encoder.setPosition(position);
+  }
+    
 }
