@@ -15,8 +15,8 @@ import frc.robot.Constants;
 public class DrivetrainSubsystem extends SubsystemBase {
     private final SparkMax fl;
     private final SparkMax fr;
-    //private final SparkMax bl;
-    //private final SparkMax br;
+    private final SparkMax bl;
+    private final SparkMax br;
 
     private final DifferentialDrive drive;
 
@@ -25,8 +25,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public DrivetrainSubsystem() {
         fl = new SparkMax(Constants.DrivetrainConstants.kFrontLeftSparkId, MotorType.kBrushed);
         fr = new SparkMax(Constants.DrivetrainConstants.kFrontRightSparkId, MotorType.kBrushed);
-        //bl = new SparkMax(Constants.DrivetrainConstants.kBackLeftSparkId, MotorType.kBrushed);
-        //br = new SparkMax(Constants.DrivetrainConstants.kBackRightSparkId, MotorType.kBrushed);
+        bl = new SparkMax(Constants.DrivetrainConstants.kBackLeftSparkId, MotorType.kBrushed);
+        br = new SparkMax(Constants.DrivetrainConstants.kBackRightSparkId, MotorType.kBrushed);
         
         SparkMaxConfig conf = new SparkMaxConfig();
 
@@ -34,15 +34,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         conf.inverted(Constants.DrivetrainConstants.kInvertLeft);
         fl.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-        //conf.follow(fl, false);
-        //bl.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        conf.follow(fl, false);
+        bl.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        //conf.disableFollowerMode();
+        conf.disableFollowerMode();
 
         conf.inverted(Constants.DrivetrainConstants.kInvertRight);
         fr.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-        //conf.follow(fr, false);
-        //br.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        conf.follow(fr, false);
+        br.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
         drive = new DifferentialDrive(fl, fr);
 
