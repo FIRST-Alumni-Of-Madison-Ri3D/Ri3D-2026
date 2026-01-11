@@ -37,6 +37,8 @@ public final class Constants {
     public static final double kP = 0;
     public static final double kI = 0;
     public static final double kD = 0;
+    /** In absolute arm revolutions? */
+    public static final double kAllowableError = 0.05;
 
     public static final double kS = 0;
     public static final double kV = 0;
@@ -44,12 +46,23 @@ public final class Constants {
     public static final double kG = 0;
 
     /**
-     * Conversion factor from motor encoder to angle of arm, with straight toward front of robot being 0 degrees
+     * Conversion factor from motor encoder to absolute rotation of arm, with straight toward front of robot being 0
      */
-    public static final double encoderToPositionRatio = 1.0;
+    public static final double kEncoderToPositionRatio = 1.0;
 
-    public static final double climberStartPosition = 0;
-    public static final double climberOutPosition = 180;
-    public static final double climberClimbPosition = 90;
+    public static final double kClimberStartPosition = 0;
+    public static final double kClimberOutPosition = 180;
+    public static final double kClimberClimbPosition = 90;
+
+    /** In RPM */
+    public static final double kClimberCruiseVelocity = 100;
+
+    /** In RPM per second */
+    public static final double kClimberMaxAcceleration = 50;
+
+    /** In absolute arm rotations */
+    public static final double kClimberAllowedProfileError = 0.1;
+
+
   }
 }

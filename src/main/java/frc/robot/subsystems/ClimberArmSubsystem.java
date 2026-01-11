@@ -40,19 +40,23 @@ public class ClimberArmSubsystem extends SubsystemBase {
       .p(Constants.ClimberConstants.kP)
       .i(Constants.ClimberConstants.kI)
       .d(Constants.ClimberConstants.kD)
-      .outputRange(-0.3, 0.3)
-      .allowedClosedLoopError(1.0, ClosedLoopSlot.kSlot0);
+      .allowedClosedLoopError(Constants.ClimberConstants.kAllowableError, ClosedLoopSlot.kSlot0);
 
     config.closedLoop.feedForward
       .kS(Constants.ClimberConstants.kS)
       .kV(Constants.ClimberConstants.kV)
       .kA(Constants.ClimberConstants.kA)
       .kCos(Constants.ClimberConstants.kG)
-      .kCosRatio(Constants.ClimberConstants.encoderToPositionRatio);
+      .kCosRatio(Constants.ClimberConstants.kEncoderToPositionRatio);
+
+    config.closedLoop.maxMotion
+      .cruiseVelocity(Constants.ClimberConstants.kClimberCruiseVelocity)
+      .maxAcceleration(Constants.ClimberConstants.kClimberMaxAcceleration)
+      .allowedProfileError(Constants.ClimberConstants.kClimberAllowedProfileError);
 
     climberArmMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-    setEncoderPosition(ClimberConstants.climberStartPosition);
+    setEncoderPosition(ClimberConstants.kClimberStartPosition);
 
   }
 
@@ -62,7 +66,7 @@ public class ClimberArmSubsystem extends SubsystemBase {
   }
 
   public Command setPositionCommand(double setpoint) {
-    return runOnce(() -> controller.setSetpoint(setpoint, ControlType.kPosition));
+    return runOnce(() -> controller.setSetpoint(setpoint, ControlType.kMAXMotionPositionControl));
   }
 
   public double getEncoderPosition() {
