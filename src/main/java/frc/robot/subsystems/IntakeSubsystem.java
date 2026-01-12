@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IntakeSusbsytem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax intake;
 
   /** Creates a new ExampleSubsystem. */
-  public IntakeSusbsytem() {
+  public IntakeSubsystem() {
     intake = new SparkMax(Constants.IntakeConstants.kIntakeId, MotorType.kBrushless);
 
     SparkBaseConfig conf = new SparkMaxConfig()
