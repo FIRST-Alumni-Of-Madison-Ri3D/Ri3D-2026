@@ -38,22 +38,25 @@ public class IntakeArmSubsystem extends SubsystemBase {
 
     config.inverted(Constants.IntakeArmConstants.kInvert);
 
+    config.encoder.positionConversionFactor(Constants.IntakeArmConstants.kEncoderToPositionRatio);
+
     config.closedLoop
       .p(Constants.IntakeArmConstants.kP)
       .i(Constants.IntakeArmConstants.kI)
       .d(Constants.IntakeArmConstants.kD)
-      .outputRange(-0.3, 0.3)
       .allowedClosedLoopError(1.0, ClosedLoopSlot.kSlot0);
 
     config.closedLoop.feedForward
       .kS(Constants.IntakeArmConstants.kS)
       .kV(Constants.IntakeArmConstants.kV)
       .kA(Constants.IntakeArmConstants.kA)
-      .kCos(Constants.IntakeArmConstants.kG)
-      .kCosRatio(Constants.IntakeArmConstants.encoderToPositionRatio);
+      .kCos(Constants.IntakeArmConstants.kG);
+
+    config.softLimit.forwardSoftLimit(0.24);
+    config.softLimit.reverseSoftLimit(-0.05);
 
     intakeArmMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-
+    controller.setSetpoint(Constants.IntakeArmConstants.kHoldPosition, ControlType.kPosition);
   }
 
   @Override
@@ -71,5 +74,9 @@ public class IntakeArmSubsystem extends SubsystemBase {
 
   public double getEncoderPosition() {
     return encoder.getPosition();
+  }
+
+  public Command setPositionCommand(double setpoint) {
+    return runOnce(() -> setPositionSetpoint(setpoint));
   }
 }
