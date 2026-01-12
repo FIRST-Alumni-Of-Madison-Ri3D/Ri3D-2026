@@ -23,6 +23,8 @@ public final class Constants {
     public static final int kFrontRightSparkId = 3;
     public static final int kBackRightSparkId = 4;
 
+    public static final int kPigeonId = 5;
+
     public static final boolean kInvertLeft = true;
     public static final boolean kInvertRight = false;
   }
