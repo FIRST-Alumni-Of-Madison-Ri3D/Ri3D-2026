@@ -4,24 +4,44 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class ExampleSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
+  private final SparkMax intake;
+
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  public IntakeSubsystem() {
+    intake = new SparkMax(Constants.IntakeConstants.kIntakeId, MotorType.kBrushless);
+
+    SparkBaseConfig conf = new SparkMaxConfig()
+      .smartCurrentLimit(80, 40)
+      .inverted(Constants.IntakeConstants.kInvertIntake);
+    
+    intake.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+  }
 
   /**
    * Example command factory method.
    *
    * @return a command
    */
-  public Command exampleMethodCommand() {
+  public Command teleop(DoubleSupplier fwd, DoubleSupplier back) {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
+    return run(
         () -> {
-          /* one-time action goes here */
+          intake.set(fwd.getAsDouble() - back.getAsDouble());
         });
   }
 

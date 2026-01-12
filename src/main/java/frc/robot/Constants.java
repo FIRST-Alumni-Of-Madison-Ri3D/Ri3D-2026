@@ -23,6 +23,8 @@ public final class Constants {
     public static final int kFrontRightSparkId = 3;
     public static final int kBackRightSparkId = 4;
 
+    public static final int kPigeonId = 5;
+
     public static final boolean kInvertLeft = true;
     public static final boolean kInvertRight = false;
   }
@@ -30,5 +32,35 @@ public final class Constants {
   public static class ShooterConstants {
     public static final int kMotorId = 20;
     public static final boolean kInvertMotor = false;
+  }
+  
+  public static class IntakeConstants {
+    public static final int kIntakeId = 11;
+    public static final boolean kInvertIntake = false;
+  }
+
+  public static class IntakeArmConstants {
+    public static final int kIntakeArmId = 12;
+
+    public static final boolean kInvert = false;
+
+    public static final double kP = 1.15;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double kS = 0.01;
+    public static final double kV = 0;
+    public static final double kA = 0;
+    public static final double kG = 0.5;
+
+    /**
+     * Conversion factor from motor encoder to angle of arm, with straight toward front of robot being 0 degrees
+     */
+    public static final double kEncoderToPositionRatio = 0.05;
+
+    /**
+     * Experimentally determined value to hold intake at.
+     */
+    public static final double  kHoldPosition = 0;
   }
 }

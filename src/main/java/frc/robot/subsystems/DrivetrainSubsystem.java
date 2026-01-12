@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,6 +19,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final SparkMax br;
 
     private final DifferentialDrive drive;
+
+    private final Pigeon2 pigeon;
 
     public DrivetrainSubsystem() {
         fl = new SparkMax(Constants.DrivetrainConstants.kFrontLeftSparkId, MotorType.kBrushed);
@@ -41,9 +45,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
         br.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
         drive = new DifferentialDrive(fl, fr);
+
+        pigeon = new Pigeon2(Constants.DrivetrainConstants.kPigeonId);
     }
 
     public void arcadeDrive(double x, double z) {
         drive.arcadeDrive(x, z, true);
+    }
+
+    public double getYawAngle() {
+        return pigeon.getYaw().getValueAsDouble();
+    }
+
+    public double getPitchAngle() {
+        return pigeon.getPitch().getValueAsDouble();
+    }
+
+    public double getRollAngle() {
+        return pigeon.getRoll().getValueAsDouble();
     }
 }
