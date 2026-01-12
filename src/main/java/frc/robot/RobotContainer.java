@@ -9,6 +9,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeArmSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -38,8 +39,12 @@ public class RobotContainer {
     configureBindings();
 
     drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
-    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorSpeed(m_driverController.getRightTriggerAxis()), shooterSubsystem));
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(m_driverController::getRightTriggerAxis, m_driverController::getLeftTriggerAxis));
+
+    SmartDashboard.putNumber("Shooter RPM", 0);
+    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorSpeed(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
+
+    SmartDashboard.putNumber("Intake RPM", 0);
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(()->SmartDashboard.getNumber("Intake RPM", 0), m_driverController::getLeftTriggerAxis));
   }
 
   /**
