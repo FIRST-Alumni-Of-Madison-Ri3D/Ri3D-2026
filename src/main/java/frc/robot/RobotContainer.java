@@ -6,7 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSusbsytem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,7 +26,8 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
-  private final IntakeSusbsytem intakeSusbsytem = new IntakeSusbsytem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final IntakeArmSubsystem intakeArmSubsystem = new IntakeArmSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -33,7 +35,7 @@ public class RobotContainer {
     configureBindings();
 
     drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
-    intakeSusbsytem.setDefaultCommand(intakeSusbsytem.teleop(m_driverController::getRightTriggerAxis, m_driverController::getLeftTriggerAxis));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(m_driverController::getRightTriggerAxis, m_driverController::getLeftTriggerAxis));
   }
 
   /**

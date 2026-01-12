@@ -30,12 +30,12 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int kIntakeId = 5;
+    public static final int kIntakeId = 11;
     public static final boolean kInvertIntake = false;
   }
 
   public static class IntakeArmConstants {
-    public static final int kIntakeArmId = 11;
+    public static final int kIntakeArmId = 12;
 
     public static final boolean kInvert = false;
 
