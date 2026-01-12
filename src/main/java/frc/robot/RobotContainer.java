@@ -38,6 +38,7 @@ public class RobotContainer {
     configureBindings();
 
     drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
+    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorSpeed(m_driverController.getRightTriggerAxis()), shooterSubsystem));
   }
 
   /**

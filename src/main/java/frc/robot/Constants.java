@@ -26,4 +26,9 @@ public final class Constants {
     public static final boolean kInvertLeft = true;
     public static final boolean kInvertRight = false;
   }
+
+  public static class ShooterConstants {
+    public static final int kMotorId = 20;
+    public static final boolean kInvertMotor = false;
+  }
 }

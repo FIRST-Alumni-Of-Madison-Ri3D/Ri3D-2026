@@ -17,6 +17,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.units.VelocityUnit;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -42,12 +43,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    flywheel = new SparkMax(0, MotorType.kBrushless);
+    flywheel = new SparkMax(Constants.ShooterConstants.kMotorId, MotorType.kBrushless);
 
     SparkMaxConfig conf = new SparkMaxConfig();
 
     conf.smartCurrentLimit(80, 40);
-    conf.inverted(Constants.DrivetrainConstants.kInvertLeft);
+    conf.idleMode(IdleMode.kCoast);
+    conf.inverted(Constants.ShooterConstants.kInvertMotor);
     conf.disableFollowerMode();
     flywheel.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
