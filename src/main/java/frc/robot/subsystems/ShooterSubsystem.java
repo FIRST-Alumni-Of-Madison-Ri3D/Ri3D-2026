@@ -92,6 +92,10 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheel.getClosedLoopController().setSetpoint(rpm, ControlType.kVelocity);
   }
 
+  public Command stopMotor() {
+    return runOnce(() -> flywheel.stopMotor());
+  }
+
   public void logSysID(SysIdRoutineLog log) {
     log.motor("shooter")
       .voltage(appliedVoltage.mut_replace(flywheel.getAppliedOutput() * RobotController.getBatteryVoltage(), Volts))

@@ -58,7 +58,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
     intakeArmMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     controller.setSetpoint(Constants.IntakeArmConstants.kHoldPosition, ControlType.kPosition);
 
-    encoder.setPosition(0.25);
+    encoder.setPosition(0.24);
   }
 
   @Override
@@ -67,7 +67,6 @@ public class IntakeArmSubsystem extends SubsystemBase {
   }
 
   public void setPositionSetpoint(double setpoint) {
-    System.out.println(setpoint);
     intakeArmMotor.getClosedLoopController().setSetpoint(setpoint, ControlType.kPosition);
   }
 

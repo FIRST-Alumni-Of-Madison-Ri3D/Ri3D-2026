@@ -5,13 +5,17 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.TimedShooterCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeArmSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -40,14 +44,16 @@ public class RobotContainer {
 
     drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
 
-    SmartDashboard.putNumber("Shooter RPM", 0);
-    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorRPM(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
+    // SmartDashboard.putNumber("Shooter RPM", 0);
+    // shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorRPM(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
 
-    SmartDashboard.putNumber("Intake RPM", 0);
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(m_driverController::getRightTriggerAxis, ()->-SmartDashboard.getNumber("Intake RPM", 0)));
+    // SmartDashboard.putNumber("Intake RPM", 0);
+    // intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(m_driverController::getRightTriggerAxis, ()->-SmartDashboard.getNumber("Intake RPM", 0)));
 
     SmartDashboard.putNumber("Intake Angle", 0);
-    intakeArmSubsystem.setDefaultCommand(new RunCommand(() -> intakeArmSubsystem.setPositionSetpoint(SmartDashboard.getNumber("Intake Angle", 0)), intakeArmSubsystem));
+    // intakeArmSubsystem.setDefaultCommand(new RunCommand(() -> intakeArmSubsystem.setPositionSetpoint(SmartDashboard.getNumber("Intake Angle", 0)), intakeArmSubsystem));
+
+    //SmartDashboard.putNumber("Shooter Unjam", -1000);
   }
 
   /**
@@ -60,10 +66,22 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.y().whileTrue(shooterSubsystem.sysIdQuasistatic(Direction.kReverse));
-    m_driverController.a().whileTrue(shooterSubsystem.sysIdQuasistatic(Direction.kForward));
-    m_driverController.b().whileTrue(shooterSubsystem.sysIdDynamic(Direction.kForward));
-    m_driverController.x().whileTrue(shooterSubsystem.sysIdDynamic(Direction.kReverse));
+    // m_driverController.y().whileTrue(shooterSubsystem.sysIdQuasistatic(Direction.kReverse));
+    // m_driverController.a().whileTrue(shooterSubsystem.sysIdQuasistatic(Direction.kForward));
+    // m_driverController.b().whileTrue(shooterSubsystem.sysIdDynamic(Direction.kForward));
+    // m_driverController.x().whileTrue(shooterSubsystem.sysIdDynamic(Direction.kReverse));
+
+    m_driverController.leftBumper().whileTrue(intakeSubsystem.setIntakeVoltage(() -> Constants.IntakeConstants.kIntakeInVoltage)
+      .alongWith(intakeArmSubsystem.setPositionCommand(SmartDashboard.getNumber("Intake Angle", 0))));
+
+    m_driverController.leftBumper().whileFalse(intakeSubsystem.stopIntake()
+      .alongWith(intakeArmSubsystem.setPositionCommand(Constants.IntakeArmConstants.kInPosition)));
+
+    m_driverController.rightBumper().onTrue(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kShooterSlowInRPM, 0.8)
+      .andThen(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kClearShooterRPM, 0.5))
+      .andThen(new RunCommand(() -> shooterSubsystem.setMotorRPM(ShooterConstants.kShooterRPM), shooterSubsystem)));
+
+    m_driverController.rightBumper().onFalse(shooterSubsystem.stopMotor());
   }
 
   /**

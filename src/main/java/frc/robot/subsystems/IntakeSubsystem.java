@@ -45,6 +45,14 @@ public class IntakeSubsystem extends SubsystemBase {
         });
   }
 
+  public Command setIntakeVoltage(DoubleSupplier voltage) {
+    return run(() -> intake.setVoltage(voltage.getAsDouble()));
+  }
+
+  public Command stopIntake() {
+    return runOnce(() -> intake.stopMotor());
+  }
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *

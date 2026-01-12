@@ -36,11 +36,18 @@ public final class Constants {
     public static final double kP = 7.0131E-05;
     public static final double kV = 0.1391 / 60;
     public static final double kA = 0.049104 / 60;
+
+    public static final double kShooterRPM = 2800;
+    public static final double kShooterSlowInRPM = 2000;
+    public static final double kClearShooterRPM = -2000;
   }
   
   public static class IntakeConstants {
     public static final int kIntakeId = 11;
     public static final boolean kInvertIntake = false;
+
+    public static final double kIntakeInVoltage = 9.9;
+    public static final double kIntakeOutVoltage = -6;
   }
 
   public static class IntakeArmConstants {
@@ -65,6 +72,7 @@ public final class Constants {
     /**
      * Experimentally determined value to hold intake at.
      */
-    public static final double  kHoldPosition = 0;
+    public static final double  kHoldPosition = 0.015;
+    public static final double kInPosition = 0.24;
   }
 }
