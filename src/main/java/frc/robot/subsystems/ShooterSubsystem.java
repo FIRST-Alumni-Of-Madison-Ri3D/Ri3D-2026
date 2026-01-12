@@ -15,6 +15,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkRelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -27,6 +28,7 @@ import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -51,6 +53,13 @@ public class ShooterSubsystem extends SubsystemBase {
     conf.idleMode(IdleMode.kCoast);
     conf.inverted(Constants.ShooterConstants.kInvertMotor);
     conf.disableFollowerMode();
+
+    conf.closedLoop
+      .p(Constants.ShooterConstants.kP)
+      .feedForward
+      .kV(Constants.ShooterConstants.kV)
+      .kA(Constants.ShooterConstants.kA);
+    
     flywheel.configure(conf, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     routine = new SysIdRoutine(
@@ -59,6 +68,10 @@ public class ShooterSubsystem extends SubsystemBase {
     );
 
     enc = flywheel.getEncoder();
+  }
+
+  public void periodic() {
+    SmartDashboard.putNumber("Shooter RPM (actual)", flywheel.getEncoder().getVelocity());
   }
 
   public void setMotorSpeed(double speed) {
@@ -73,6 +86,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setMotorVoltage(Voltage voltage) {
     flywheel.setVoltage(voltage.magnitude());
+  }
+
+  public void setMotorRPM(double rpm) {
+    flywheel.getClosedLoopController().setSetpoint(rpm, ControlType.kVelocity);
   }
 
   public void logSysID(SysIdRoutineLog log) {

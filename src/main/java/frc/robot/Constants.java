@@ -32,6 +32,10 @@ public final class Constants {
   public static class ShooterConstants {
     public static final int kMotorId = 20;
     public static final boolean kInvertMotor = false;
+
+    public static final double kP = 7.0131E-05;
+    public static final double kV = 0.1391 / 60;
+    public static final double kA = 0.049104 / 60;
   }
   
   public static class IntakeConstants {
@@ -44,7 +48,7 @@ public final class Constants {
 
     public static final boolean kInvert = false;
 
-    public static final double kP = 1.15;
+    public static final double kP = 1.5;
     public static final double kI = 0;
     public static final double kD = 0;
 

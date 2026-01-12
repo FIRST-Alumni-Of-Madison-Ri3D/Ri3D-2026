@@ -41,10 +41,13 @@ public class RobotContainer {
     drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
 
     SmartDashboard.putNumber("Shooter RPM", 0);
-    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorSpeed(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
+    shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorRPM(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
 
     SmartDashboard.putNumber("Intake RPM", 0);
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(()->SmartDashboard.getNumber("Intake RPM", 0), m_driverController::getLeftTriggerAxis));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.teleop(m_driverController::getRightTriggerAxis, ()->-SmartDashboard.getNumber("Intake RPM", 0)));
+
+    SmartDashboard.putNumber("Intake Angle", 0);
+    intakeArmSubsystem.setDefaultCommand(new RunCommand(() -> intakeArmSubsystem.setPositionSetpoint(SmartDashboard.getNumber("Intake Angle", 0)), intakeArmSubsystem));
   }
 
   /**

@@ -17,6 +17,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -43,8 +44,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
     config.closedLoop
       .p(Constants.IntakeArmConstants.kP)
       .i(Constants.IntakeArmConstants.kI)
-      .d(Constants.IntakeArmConstants.kD)
-      .allowedClosedLoopError(1.0, ClosedLoopSlot.kSlot0);
+      .d(Constants.IntakeArmConstants.kD);
 
     config.closedLoop.feedForward
       .kS(Constants.IntakeArmConstants.kS)
@@ -57,15 +57,18 @@ public class IntakeArmSubsystem extends SubsystemBase {
 
     intakeArmMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     controller.setSetpoint(Constants.IntakeArmConstants.kHoldPosition, ControlType.kPosition);
+
+    encoder.setPosition(0.25);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Intake Angle (actual)", encoder.getPosition());
   }
 
   public void setPositionSetpoint(double setpoint) {
-    controller.setSetpoint(setpoint, ControlType.kPosition);
+    System.out.println(setpoint);
+    intakeArmMotor.getClosedLoopController().setSetpoint(setpoint, ControlType.kPosition);
   }
 
   public void setEncoderPosition(double setpoint) {
