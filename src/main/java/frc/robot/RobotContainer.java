@@ -6,10 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimberFlipCommand;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,14 +30,19 @@ public class RobotContainer {
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  //private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+
+ // private final ClimberFlipCommand climberFlipCommand = new ClimberFlipCommand(drivetrainSubsystem, climberSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
-    drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
+    //drivetrainSubsystem.setDefaultCommand(new RunCommand(() -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
+
+    //SmartDashboard.putNumber("Target arm angle", 0);
   }
 
   /**
@@ -47,6 +55,23 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // m_driverController.a().whileTrue(climberSubsystem.setArmPositionCommand(SmartDashboard.getNumber("Target arm angle", 0)));
+
+    // m_driverController.a().onFalse(climberSubsystem.stopAllMotors());
+
+    // m_driverController.b().whileTrue(climberFlipCommand);
+
+    // m_driverController.b().onFalse(climberSubsystem.stopAllMotors());
+
+    // climberSubsystem.setArmMotorOutput(m_driverController.getLeftX());
+
+    // climberSubsystem.setSpinMotorOutput(m_driverController.getRightX());
+
+    climberSubsystem.setDefaultCommand(new RunCommand(() -> {
+      climberSubsystem.setArmMotorOutput(m_driverController.getLeftX());
+
+      climberSubsystem.setSpinMotorOutput(m_driverController.getRightX());
+    }, climberSubsystem));
     
   }
 

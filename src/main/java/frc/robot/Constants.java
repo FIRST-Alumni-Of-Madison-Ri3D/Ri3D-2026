@@ -30,38 +30,70 @@ public final class Constants {
   }
 
   public static class ClimberConstants {
-    public static final int kClimberArmId = 10;
+    public static final int kClimberArmId = 31;
+    public static final int kClimberSpinId = 32;
 
-    public static final boolean kInvert = false;
+    public static final boolean kArmInvert = false;
+    public static final boolean kSpinInvert = false;
 
-    public static final double kP = 0;
-    public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kClimberArmP = 0;
+    public static final double kClimberArmI = 0;
+    public static final double kClimberArmD = 0;
     /** In absolute arm revolutions? */
-    public static final double kAllowableError = 0.05;
+    public static final double kClimberArmAllowableError = 0.05;
 
-    public static final double kS = 0;
-    public static final double kV = 0;
-    public static final double kA = 0;
-    public static final double kG = 0;
+    public static final double kClimberArmS = 0;
+    public static final double kClimberArmV = 0;
+    public static final double kClimberArmA = 0;
+    public static final double kClimberArmG = 0;
 
     /**
      * Conversion factor from motor encoder to absolute rotation of arm, with straight toward front of robot being 0
      */
-    public static final double kEncoderToPositionRatio = 1.0;
+    public static final double kClimberArmRatio = 1.0;
 
-    public static final double kClimberStartPosition = 0;
-    public static final double kClimberOutPosition = 180;
-    public static final double kClimberClimbPosition = 90;
+    public static final double kClimberArmStartPosition = 0;
+    public static final double kClimberArmOutPosition = 90;
+    public static final double kClimberArmClimbPosition = 0;
 
     /** In RPM */
-    public static final double kClimberCruiseVelocity = 100;
+    public static final double kClimberArmCruiseVelocity = 100;
 
     /** In RPM per second */
-    public static final double kClimberMaxAcceleration = 50;
+    public static final double kClimberArmMaxAcceleration = 50;
 
     /** In absolute arm rotations */
-    public static final double kClimberAllowedProfileError = 0.1;
+    public static final double kClimberArmAllowedProfileError = 0.1;
+
+
+    
+    public static final double kClimberSpinP = 0;
+    public static final double kClimberSpinI = 0;
+    public static final double kClimberSpinD = 0;
+    /** In absolute arm revolutions? */
+    public static final double kClimberSpinAllowableError = 0.05;
+
+    public static final double kClimberSpinS = 0;
+    public static final double kClimberSpinV = 0;
+    public static final double kClimberSpinA = 0;
+    public static final double kClimberSpinG = 0;
+
+    /**
+     * Conversion factor from motor encoder to absolute rotation of arm, with straight toward front of robot being 0
+     */
+    public static final double kClimberSpinRatio = 1.0;
+
+    public static final double kClimberSpinStartPosition = 0;
+    public static final double kClimberSpinClimbPosition = 180;
+
+    /** In degrees per second */
+    public static final double kClimberSpinMaxVelocity = 100;
+
+    /** In degrees per second per second */
+    public static final double kClimberSpinMaxAcceleration = 50;
+
+    /** In degrees */
+    public static final double kClimberSpinAllowedProfileError = 0.1;
 
 
   }
