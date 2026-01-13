@@ -46,7 +46,7 @@ public final class Constants {
     public static final int kIntakeId = 11;
     public static final boolean kInvertIntake = false;
 
-    public static final double kIntakeInVoltage = 9.9;
+    public static final double kIntakeInVoltage = 10.5;
     public static final double kIntakeOutVoltage = -6;
   }
 

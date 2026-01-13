@@ -42,7 +42,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.6, -m_driverController.getLeftX() * 0.6), drivetrainSubsystem));
+    drivetrainSubsystem.setDefaultCommand(new RunCommand( () -> drivetrainSubsystem.arcadeDrive(-m_driverController.getLeftY() * 0.8, -m_driverController.getLeftX() * 0.8), drivetrainSubsystem));
 
     // SmartDashboard.putNumber("Shooter RPM", 0);
     // shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.setMotorRPM(SmartDashboard.getNumber("Shooter RPM", 0)), shooterSubsystem));
@@ -77,9 +77,11 @@ public class RobotContainer {
     m_driverController.leftBumper().whileFalse(intakeSubsystem.stopIntake()
       .alongWith(intakeArmSubsystem.setPositionCommand(Constants.IntakeArmConstants.kInPosition)));
 
-    m_driverController.rightBumper().onTrue(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kShooterSlowInRPM, 0.8)
-      .andThen(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kClearShooterRPM, 0.5))
-      .andThen(new RunCommand(() -> shooterSubsystem.setMotorRPM(ShooterConstants.kShooterRPM), shooterSubsystem)));
+    // m_driverController.rightBumper().onTrue(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kShooterSlowInRPM, 0.8)
+    //   .andThen(new TimedShooterCommand(shooterSubsystem, Constants.ShooterConstants.kClearShooterRPM, 0.5))
+    //   .andThen(new RunCommand(() -> shooterSubsystem.setMotorRPM(ShooterConstants.kShooterRPM), shooterSubsystem)));
+
+    m_driverController.rightBumper().whileTrue(new RunCommand(() -> shooterSubsystem.setMotorRPM(ShooterConstants.kShooterRPM), shooterSubsystem));
 
     m_driverController.rightBumper().onFalse(shooterSubsystem.stopMotor());
   }
